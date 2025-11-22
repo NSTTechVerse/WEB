@@ -1,0 +1,105 @@
+{
+  "name": "restaurant-billing",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "dev:electron": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 NODE_ENV=development electron electron/main.js\"",
+    "build:electron": "vite build && electron-builder",
+    "dist": "npm run build:electron",
+    "postinstall": "npm rebuild better-sqlite3 --runtime=electron --target=38.4.0 --dist-url=https://electronjs.org/headers"
+  },
+  "main": "electron/main.js",
+  "build": {
+    "appId": "com.nsbilling.app",
+    "productName": "NSBilling",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**",
+      "node_modules/bindings/**",
+      "electron/**/*.js"
+    ],
+    "extraResources": [
+      {
+        "from": "electron/database/",
+        "to": "app.asar.unpacked/electron/database",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "electron/db.js",
+        "to": "app.asar.unpacked/electron/db.js"
+      }
+    ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "build/icons/icon.icns",
+      "category": "public.app-category.business"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icons/icon.ico",
+      "verifyUpdateCodeSignature": false
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "zip"
+      ],
+      "icon": "build/icons/",
+      "category": "Utility"
+    }
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.16",
+    "axios": "^1.13.0",
+    "better-sqlite3": "^12.4.1",
+    "bindings": "^1.5.0",
+    "dotenv": "^17.2.3",
+    "escpos": "^3.0.0-alpha.6",
+    "escpos-buffer": "^4.1.0",
+    "file-uri-to-path": "^2.0.0",
+    "framer-motion": "^12.23.24",
+    "node-fetch": "^3.3.2",
+    "pdfmake": "^0.2.20",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-icons": "^5.5.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.4",
+    "autoprefixer": "^10.4.21",
+    "babel-plugin-react-compiler": "^19.1.0-rc.3",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^38.4.0",
+    "electron-builder": "^26.0.12",
+    "eslint": "^9.36.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.22",
+    "globals": "^16.4.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.16",
+    "vite": "^7.1.7",
+    "wait-on": "^9.0.1"
+  }
+}

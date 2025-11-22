@@ -1,0 +1,16 @@
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: white;
+  color: black;
+}
+
+input {
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+button {
+  font-size: 16px;
+}
